@@ -1,0 +1,40 @@
+<!--<&#45;&#45;  наследуемся от шаблона default.html, который мы создавали для flatpages &ndash;&gt;-->
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block title %}
+Comments
+{% endblock title %}
+
+{% block content %}
+   <h1>Всего комментариев</h1>
+   <h2>{{ comments|length }}</h2>
+   <br/>
+   <h3>{% current_time '%d %B, %Y' %}</h3>
+   <hr>
+   {% if comments %}
+       <table>
+           <tr>
+               <td><b>id комментария</b></td>
+               <td><b>текст комментария</b></td>
+               <td><b>когда был написан комментарий</b></td>
+               <td><b>рейтинг комментария</b></td>
+           </tr>
+
+           {% for comment in comments %}
+           <tr>
+               <td>{{ comment.id }}</td>
+               <td>{{ comment.comment|censor }}</td>
+               <td>{{ comment.date_time_creation_comment|date:'d E, Y' }}</td>
+               <td>{{ comment.rating|rating_int }}</td>
+
+           </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2>Комментариев нет!</h2>
+   {% endif %}
+{% endblock content %}

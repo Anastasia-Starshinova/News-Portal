@@ -1,0 +1,34 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block title %}
+Categories
+{% endblock title %}
+
+{% block content %}
+   <h1>Категории новостей</h1>
+   <h2>{{ categories|length|count_of_categories }}</h2>
+   <br/>
+   <h3>{% current_time '%d %B, %Y' %}</h3>
+   <hr>
+   {% if categories %}
+       <table>
+           <tr>
+               <td><b>id категории</b></td>
+               <td><b>Название категории</b></td>
+           </tr>
+           {% for category in categories %}
+           <tr>
+               <td>{{ category.id }}</td>
+               <td>{{ category.news_category }}</td>
+
+           </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2>Категорий нет!</h2>
+   {% endif %}
+{% endblock content %}}

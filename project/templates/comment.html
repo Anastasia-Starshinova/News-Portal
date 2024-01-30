@@ -1,0 +1,16 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block title %}
+Comment
+{% endblock title %}
+
+{% block content %}
+<h1>{{ comment.comment|censor }}</h1>
+<h3>{{ comment.date_time_creation_comment|date:'d E, Y'|date_time_creation_comment }}</h3>
+<p>{{ comment.rating|rating }}</p>
+{% endblock content %}
+

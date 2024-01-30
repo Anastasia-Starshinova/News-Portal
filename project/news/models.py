@@ -1,5 +1,8 @@
 from django.db import models
-
+# import datetime
+# from datetime import datetime
+from datetime import datetime, timezone
+import time
 
 news = 'NEWS'
 post = 'POST'
@@ -16,6 +19,9 @@ class User(models.Model):
     last_login = models.DateTimeField(blank=True, null=True)
 
     is_active = True
+
+    def __str__(self):
+        return self.username
 
 
 class Author(models.Model):
@@ -65,6 +71,9 @@ class Author(models.Model):
 class Category(models.Model):
     news_category = models.CharField(default='...', max_length=255, unique=True)
 
+    def __str__(self):
+        return self.news_category
+
 
 class Post(models.Model):
     news = 'NEWS'
@@ -77,6 +86,17 @@ class Post(models.Model):
     title = models.CharField(default='...', max_length=255)
     text = models.TextField(default='...')
     rating = models.FloatField(default=0.0)
+
+    def edit_time(self):
+        self.date_time_creation_post = self.date_time_creation_post.replace(tzinfo=None)
+        print(self.date_time_creation_post)
+        format_string = "%Y-%m-%d %H:%M"
+        self.date_time_creation_post = self.date_time_creation_post.strftime(format_string)
+        print(self.date_time_creation_post)
+        self.save()
+
+    def __str__(self):
+        return self.title
 
     def like(self):
         self.rating += 1
@@ -125,6 +145,9 @@ class Comment(models.Model):
     comment = models.CharField(default='...', max_length=255)
     date_time_creation_comment = models.DateTimeField(null=True, auto_now_add=True)
     rating = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return f'{self.comment[:30]}'
 
     def like(self):
         self.rating += 1
