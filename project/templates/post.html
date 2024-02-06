@@ -10,6 +10,11 @@ Post
 
 {% block content %}
 <h1>{{ post.title|censor }}</h1>
-<h3>{{ post.date_time_creation_post|date:'j F, Y' }}</h3>
+<h3> дата создания — {{ post.date_time_creation_post|date:'j F, Y' }}</h3>
 <p>{{ post.text|censor }}</p>
+<br/>
+<br/>
+<br/>
+
+<h3>Автор: {{ post.author }}</h3>
 {% endblock content %}

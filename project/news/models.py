@@ -1,8 +1,7 @@
 from django.db import models
-# import datetime
-# from datetime import datetime
 from datetime import datetime, timezone
 import time
+from django.urls import reverse
 
 news = 'NEWS'
 post = 'POST'
@@ -16,7 +15,8 @@ POSITIONS = [
 class User(models.Model):
     username = models.TextField(default='...', help_text='Введите своё Имя и Фамилию. Например: Иван Иванов')
     password = models.CharField(max_length=128)
-    last_login = models.DateTimeField(blank=True, null=True)
+    # last_login = models.DateTimeField(blank=True, null=True)
+    last_login = models.DateTimeField(null=True, auto_now_add=True)
 
     is_active = True
 
@@ -67,6 +67,9 @@ class Author(models.Model):
         self.rating = sum_rating_author_posts + sum_rating_comments_author_posts + sum_rating_author_comments
         self.save()
 
+    def __str__(self):
+        return self.user.username
+
 
 class Category(models.Model):
     news_category = models.CharField(default='...', max_length=255, unique=True)
@@ -87,6 +90,9 @@ class Post(models.Model):
     text = models.TextField(default='...')
     rating = models.FloatField(default=0.0)
 
+    class Meta:
+        ordering = ['-date_time_creation_post']
+
     def edit_time(self):
         self.date_time_creation_post = self.date_time_creation_post.replace(tzinfo=None)
         print(self.date_time_creation_post)
@@ -97,6 +103,9 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
 
     def like(self):
         self.rating += 1
@@ -137,6 +146,9 @@ class Post(models.Model):
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+
+    # def __str__(self):
+    #     return self.title
 
 
 class Comment(models.Model):
