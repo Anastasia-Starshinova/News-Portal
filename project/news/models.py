@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 import time
 from django.urls import reverse
 
+
 news = 'NEWS'
 post = 'POST'
 

@@ -2,11 +2,17 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from datetime import datetime
 
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from .models import Post, Category, Comment
 from .filters import PostFilter
 from .forms import PostForm
 from django.http import HttpResponseRedirect
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
+# from django.contrib.auth import get_user_model
+# User = get_user_model()
 
 
 class NewsList(ListView):
@@ -29,13 +35,15 @@ class NewsList(ListView):
     #     return context
 
 
-# Добавляем новое представление для создания постов.
-class NewsCreate(CreateView):
-    # Указываем нашу разработанную форму
+class NewsCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_author', 'news.view_author', 'news.add_category',
+                           'news.view_category', 'news.add_comment', 'news.view_comment',
+                           'news.add_post', 'news.change_post', 'news.delete_post',
+                           'news.view_post', 'news.add_postcategory', 'news.view_postcategory',
+                           'news.change_postcategory', 'news.delete_postcategory',
+                           )
     form_class = PostForm
-    # модель товаров
     model = Post
-    # и новый шаблон, в котором используется форма.
     template_name = 'news_create.html'
 
     def form_valid(self, form):
@@ -44,11 +52,11 @@ class NewsCreate(CreateView):
         return super().form_valid(form)
 
 
-# Добавляем представление для изменения товара.
-class NewsEdit(UpdateView):
+class NewsEdit(LoginRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'news_edit.html'
+
 
 
 # Представление удаляющее товар.
@@ -78,12 +86,15 @@ class ArticlesList(ListView):
     #     return context
 
 
-class ArticlesCreate(CreateView):
-    # Указываем нашу разработанную форму
+class ArticlesCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_author', 'news.view_author', 'news.add_category',
+                           'news.view_category', 'news.add_comment', 'news.view_comment',
+                           'news.add_post', 'news.change_post', 'news.delete_post',
+                           'news.view_post', 'news.add_postcategory', 'news.view_postcategory',
+                           'news.change_postcategory', 'news.delete_postcategory',
+                           )
     form_class = PostForm
-    # модель товаров
     model = Post
-    # и новый шаблон, в котором используется форма.
     template_name = 'articles_create.html'
 
     def form_valid(self, form):
@@ -93,7 +104,7 @@ class ArticlesCreate(CreateView):
 
 
 # Добавляем представление для изменения товара.
-class ArticlesEdit(UpdateView):
+class ArticlesEdit(LoginRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'articles_edit.html'
