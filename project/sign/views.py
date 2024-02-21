@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.views.generic.edit import CreateView
 from .models import BaseRegisterForm
 from django.shortcuts import redirect
@@ -21,15 +21,15 @@ from django.views.generic import View
 
 @login_required
 def upgrade_me(request):
-    user = request.user
+    AbstractUser = request.AbstractUser
     authors_group = Group.objects.get(name='authors')
-    if not request.user.groups.filter(name='authors').exists():
-        authors_group.user_set.add(user)
+    if not request.AbstractUser.groups.filter(name='authors').exists():
+        authors_group.AbstractUser_set.add(AbstractUser)
     return redirect('/')
 
 
 class BaseRegisterView(CreateView):
-    model = User
+    model = AbstractUser
     form_class = BaseRegisterForm
     success_url = '/'
 

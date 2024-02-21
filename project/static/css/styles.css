@@ -2792,9 +2792,9 @@ textarea.form-control-lg {
   text-decoration: none;
   vertical-align: middle;
   cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  -webkit-AbstractUser-select: none;
+     -moz-AbstractUser-select: none;
+          AbstractUser-select: none;
   border: var(--bs-btn-border-width) solid var(--bs-btn-border-color);
   border-radius: var(--bs-btn-border-radius);
   background-color: var(--bs-btn-bg);
@@ -5154,9 +5154,9 @@ textarea.form-control-lg {
 }
 .btn-close:disabled, .btn-close.disabled {
   pointer-events: none;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  -webkit-AbstractUser-select: none;
+     -moz-AbstractUser-select: none;
+          AbstractUser-select: none;
   opacity: 0.25;
 }
 
@@ -8208,22 +8208,22 @@ textarea.form-control-lg {
   background-image: var(--bs-gradient) !important;
 }
 
-.user-select-all {
-  -webkit-user-select: all !important;
-     -moz-user-select: all !important;
-          user-select: all !important;
+.AbstractUser-select-all {
+  -webkit-AbstractUser-select: all !important;
+     -moz-AbstractUser-select: all !important;
+          AbstractUser-select: all !important;
 }
 
-.user-select-auto {
-  -webkit-user-select: auto !important;
-     -moz-user-select: auto !important;
-          user-select: auto !important;
+.AbstractUser-select-auto {
+  -webkit-AbstractUser-select: auto !important;
+     -moz-AbstractUser-select: auto !important;
+          AbstractUser-select: auto !important;
 }
 
-.user-select-none {
-  -webkit-user-select: none !important;
-     -moz-user-select: none !important;
-          user-select: none !important;
+.AbstractUser-select-none {
+  -webkit-AbstractUser-select: none !important;
+     -moz-AbstractUser-select: none !important;
+          AbstractUser-select: none !important;
 }
 
 .pe-none {

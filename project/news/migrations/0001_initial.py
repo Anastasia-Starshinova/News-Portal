@@ -27,10 +27,10 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='User',
+            name='AbstractUser',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('username', models.TextField(default='...', help_text='Введите своё Имя и Фамилию. Например: Иван Иванов')),
+                ('AbstractUsername', models.TextField(default='...', help_text='Введите своё Имя и Фамилию. Например: Иван Иванов')),
                 ('password', models.CharField(max_length=128)),
                 ('last_login', models.DateTimeField(blank=True, null=True)),
             ],
@@ -68,12 +68,12 @@ class Migration(migrations.Migration):
                 ('date_time_creation_comment', models.DateTimeField(auto_now_add=True, null=True)),
                 ('rating', models.FloatField(default=0.0)),
                 ('post', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='news.post')),
-                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='news.user')),
+                ('AbstractUser', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='news.AbstractUser')),
             ],
         ),
         migrations.AddField(
             model_name='author',
-            name='user',
-            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to='news.user'),
+            name='AbstractUser',
+            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to='news.AbstractUser'),
         ),
     ]

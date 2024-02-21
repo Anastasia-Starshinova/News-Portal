@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='user',
+            model_name='AbstractUser',
             name='last_login',
             field=models.DateTimeField(auto_now_add=True, null=True),
         ),

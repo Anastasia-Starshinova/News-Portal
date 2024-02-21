@@ -11,8 +11,14 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
-# from django.contrib.auth import get_user_model
-# User = get_user_model()
+# from django.contrib.auth import get_AbstractUser_model
+# AbstractUser = get_AbstractUser_model()
+
+
+from django.shortcuts import render, reverse, redirect
+from django.views import View
+from django.core.mail import send_mail
+from datetime import datetime
 
 
 class NewsList(ListView):
@@ -60,7 +66,7 @@ class NewsEdit(LoginRequiredMixin, UpdateView):
 
 
 # Представление удаляющее товар.
-class NewsDelete(DeleteView):
+class NewsDelete(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'news_delete.html'
     success_url = reverse_lazy('post_list')
@@ -110,7 +116,7 @@ class ArticlesEdit(LoginRequiredMixin, UpdateView):
     template_name = 'articles_edit.html'
 
 
-class ArticlesDelete(DeleteView):
+class ArticlesDelete(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'articles_delete.html'
     success_url = reverse_lazy('post_list')

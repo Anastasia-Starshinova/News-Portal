@@ -1,5 +1,5 @@
 from django_filters import FilterSet, ModelMultipleChoiceFilter, NumberFilter, CharFilter, DateFilter
-from .models import Post, Category, Author, User
+from .models import Post, Category, Author, AbstractUser
 
 # Создаем свой набор фильтров для модели Product.
 # FilterSet, который мы наследуем,
@@ -12,8 +12,8 @@ class PostFilter(FilterSet):
                                  label='категории')
                                  # empty_label='любая категория')
 
-    author = ModelMultipleChoiceFilter(field_name='author__user',
-                                         queryset=User.objects.all(),
+    author = ModelMultipleChoiceFilter(field_name='author__AbstractUser',
+                                         queryset=AbstractUser.objects.all(),
                                          label='автор')
 
     # ещё вариант как сделать, чтобы все названия выпадали и можно было выбрать

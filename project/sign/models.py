@@ -1,7 +1,7 @@
 from django.db import models
 
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import BaseUserCreationForm
+from django.contrib.auth.models import AbstractUser
 from django import forms
 from allauth.account.forms import SignupForm
 from django.contrib.auth.models import Group
@@ -9,19 +9,19 @@ from django.views.generic import View
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
-class BaseRegisterForm(UserCreationForm):
+class BaseRegisterForm(BaseUserCreationForm):
     email = forms.EmailField(label="Email")
     first_name = forms.CharField(label="Имя")
     last_name = forms.CharField(label="Фамилия")
 
     class Meta:
-        model = User
+        model = AbstractUser
         fields = ("username",
                   "first_name",
                   "last_name",
                   "email",
                   "password1",
-                  "password2", )
+                  "password2")
 
 
 class CommonSignupForm(SignupForm):

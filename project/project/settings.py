@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'appointments'
 ]
 
 SITE_ID = 1
@@ -86,24 +87,29 @@ TEMPLATES = [
 ]
 
 #
-LOGIN_URL = '/sign/login/'
-# LOGIN_URL = '/accounts/login/'
+# LOGIN_URL = '/sign/login/'
+LOGIN_URL = '/accounts/login/'
 # LOGIN_REDIRECT_URL = '/main/news'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/sign/logout/'
 
 ACCOUNT_FORMS = {'signup': 'sign.models.CommonSignupForm'}
-# ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-# ACCOUNT_EMAIL_VERIFICATION = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 
+ADMINS = [
+    ('admin', 'starschinowa.ana@gmail.com'),
+    # список всех админов в формате ('имя', 'их почта')
+]
+SERVER_EMAIL = 'starschinowa.anastasia@yandex.ru'  # это будет у нас вместо аргумента FROM в массовой рассылке
+
+
 AUTHENTICATION_BACKENDS = [
-    # Needed to login by username in Django admin, regardless of `allauth`
+    # Needed to login by AbstractUsername in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
 
     # `allauth` specific authentication methods, such as login by e-mail
@@ -121,7 +127,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'News Portal',
-        'USER': 'postgres',
+        'AbstractUser': 'postgres',
         'PASSWORD': '2802',
         'HOST': '::1',
         'PORT': '5432',
@@ -134,7 +140,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.AbstractUserAttributeSimilarityValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
@@ -170,5 +176,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# AUTH_USER_MODEL = 'news.User'
-# AUTH_USER_MODEL = 'django.contrib.auth.models.User'
+AUTH_USER_MODEL = 'news.AbstractUser'
+# AUTH_AbstractUser_MODEL = 'django.contrib.auth.models.AbstractUser'
+EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера Яндекс-почты для всех один и тот же
+EMAIL_PORT = 465  # порт smtp сервера тоже одинаковый
+EMAIL_HOST_AbstractUser = 'starschinowa.anastasia'  # ваше имя пользователя, например, если ваша почта AbstractUser@yandex.ru, то сюда надо писать AbstractUser, иными словами, это всё то что идёт до собаки
+EMAIL_HOST_PASSWORD = '03160316Aa'  # пароль от почты
+EMAIL_USE_SSL = True  # Яндекс использует ssl, подробнее о том, что это, почитайте в дополнительных источниках, но включать его здесь обязательно
