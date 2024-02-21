@@ -4,7 +4,7 @@ from datetime import datetime
 
 class Appointment(models.Model):
     date = models.DateField(
-        default=datetime.utcnow,
+        default=datetime.now(),
     )
     client_name = models.CharField(
         max_length=200

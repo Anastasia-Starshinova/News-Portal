@@ -40,9 +40,3 @@ class PostForm(forms.ModelForm):
             )
 
         return cleaned_data
-
-    # def send_email(self):
-    #     # send email using the self.cleaned_data dictionary
-    #     pass
-
-

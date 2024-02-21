@@ -176,7 +176,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'news.AbstractUser'
+AUTH_USER_MODEL = 'news.User'
+# AUTH_USER_MODEL = 'news.AbstractUser'
 # AUTH_AbstractUser_MODEL = 'django.contrib.auth.models.AbstractUser'
 EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера Яндекс-почты для всех один и тот же
 EMAIL_PORT = 465  # порт smtp сервера тоже одинаковый

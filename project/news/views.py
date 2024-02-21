@@ -11,9 +11,6 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
-# from django.contrib.auth import get_AbstractUser_model
-# AbstractUser = get_AbstractUser_model()
-
 
 from django.shortcuts import render, reverse, redirect
 from django.views import View
@@ -64,8 +61,6 @@ class NewsEdit(LoginRequiredMixin, UpdateView):
     template_name = 'news_edit.html'
 
 
-
-# Представление удаляющее товар.
 class NewsDelete(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'news_delete.html'

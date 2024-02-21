@@ -1,7 +1,7 @@
 from django.db import models
 
 from django.contrib.auth.forms import BaseUserCreationForm
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 from django import forms
 from allauth.account.forms import SignupForm
 from django.contrib.auth.models import Group
@@ -15,7 +15,8 @@ class BaseRegisterForm(BaseUserCreationForm):
     last_name = forms.CharField(label="Фамилия")
 
     class Meta:
-        model = AbstractUser
+        model = User
+        # model = AbstractUser
         fields = ("username",
                   "first_name",
                   "last_name",

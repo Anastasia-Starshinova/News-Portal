@@ -2,8 +2,7 @@ from django.db import models
 from datetime import datetime
 import time
 from django.urls import reverse
-from django.contrib.auth.models import PermissionsMixin, User
-from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.contrib.auth.models import AbstractUser
 
 news = 'NEWS'
 post = 'POST'
@@ -25,62 +24,70 @@ POSITIONS = [
 #     def __str__(self):
 #         return self.username
 
-class AbstractBaseUser(models.Model):
-    password = models.CharField(('password'), max_length=128)
-    last_login = models.DateTimeField(('last login'), blank=True, null=True)
-
-    is_active = True
-
-
-class AbstractUser(AbstractBaseUser, PermissionsMixin):
-    """
-    An abstract base class implementing a fully featured User model with
-    admin-compliant permissions.
-
-    Username and password are required. Other fields are optional.
-    """
-    username_validator = UnicodeUsernameValidator()
-
-    username = models.CharField(
-        ('username'),
-        max_length=150,
-        unique=True,
-        help_text=('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
-        validators=[username_validator],
-        error_messages={
-            'unique': ("A user with that username already exists."),
-        },
-    )
-    first_name = models.CharField(('first name'), max_length=150, blank=True)
-    last_name = models.CharField(('last name'), max_length=150, blank=True)
-    email = models.EmailField(('email address'), blank=True)
-    is_staff = models.BooleanField(
-        ('staff status'),
-        default=False,
-        help_text=('Designates whether the user can log into this admin site.'),
-    )
-    is_active = models.BooleanField(
-        ('active'),
-        default=True,
-        help_text=(
-            'Designates whether this user should be treated as active. '
-            'Unselect this instead of deleting accounts.'
-        ),
-    )
-    date_joined = models.DateTimeField(('date joined'), default=datetime.now)
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ["first_name", "last_name"]
-
-    def __unicode__(self):
-        return self.email
+class User(AbstractUser):
+    pass
+    # add additional fields in here
 
     def __str__(self):
         return self.username
 
 
+# class AbstractBaseUser(models.Model):
+#     password = models.CharField(('password'), max_length=128)
+#     last_login = models.DateTimeField(('last login'), blank=True, null=True)
+#
+#     is_active = True
+#
+#
+# class AbstractUser(AbstractBaseUser, PermissionsMixin):
+#     """
+#     An abstract base class implementing a fully featured User model with
+#     admin-compliant permissions.
+#
+#     Username and password are required. Other fields are optional.
+#     """
+#     username_validator = UnicodeUsernameValidator()
+#
+#     username = models.CharField(
+#         ('username'),
+#         max_length=150,
+#         unique=True,
+#         help_text=('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+#         validators=[username_validator],
+#         error_messages={
+#             'unique': ("A user with that username already exists."),
+#         },
+#     )
+#     first_name = models.CharField(('first name'), max_length=150, blank=True)
+#     last_name = models.CharField(('last name'), max_length=150, blank=True)
+#     email = models.EmailField(('email address'), blank=True)
+#     is_staff = models.BooleanField(
+#         ('staff status'),
+#         default=False,
+#         help_text=('Designates whether the user can log into this admin site.'),
+#     )
+#     is_active = models.BooleanField(
+#         ('active'),
+#         default=True,
+#         help_text=(
+#             'Designates whether this user should be treated as active. '
+#             'Unselect this instead of deleting accounts.'
+#         ),
+#     )
+#     date_joined = models.DateTimeField(('date joined'), default=datetime.now)
+#
+#     USERNAME_FIELD = 'email'
+#     REQUIRED_FIELDS = ["first_name", "last_name"]
+#
+#     def __unicode__(self):
+#         return self.email
+#
+#     def __str__(self):
+#         return self.username
+
+
 class Author(models.Model):
-    AbstractUser = models.OneToOneField(AbstractUser, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     rating = models.FloatField(default=0.0)
 
     def update_rating(self):
@@ -88,7 +95,7 @@ class Author(models.Model):
         sum_rating_comments_author_posts = 0
         sum_rating_author_comments = 0
 
-        author_posts = Post.objects.filter(author=self.AbstractUser.id)
+        author_posts = Post.objects.filter(author=self.User.id)
         if len(author_posts) == 1:
             rating_author_post = author_posts.values('rating')
             rating_author_post = int([list(elem.values()) for elem in rating_author_post][0][0])
@@ -99,7 +106,7 @@ class Author(models.Model):
             rating_author_post = [int(elem[0]) for elem in rating_author_post]
             sum_rating_author_posts = sum(rating_author_post) * 3
 
-        author_comments = Comment.objects.filter(AbstractUser=self.AbstractUser.id)
+        author_comments = Comment.objects.filter(user=self.User.id)
         if len(author_comments) == 1:
             rating_author_comments = author_comments.values('rating')
             rating_author_comments = int([list(elem.values()) for elem in rating_author_comments][0][0])
@@ -123,7 +130,7 @@ class Author(models.Model):
         self.save()
 
     def __str__(self):
-        return self.AbstractUser.AbstractUsername
+        return self.User.username
 
 
 class Category(models.Model):
@@ -202,13 +209,10 @@ class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
 
-    # def __str__(self):
-    #     return self.title
-
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
-    AbstractUser = models.ForeignKey(AbstractUser, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     comment = models.CharField(default='...', max_length=255)
     date_time_creation_comment = models.DateTimeField(null=True, auto_now_add=True)
     rating = models.FloatField(default=0.0)
